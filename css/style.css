@@ -87,7 +87,7 @@ main .container{
     width: 90%;
 }
 
-.items { 
+.item { 
     padding: 0.15rem;
     width: 100%;
     margin-top: 30px;
@@ -97,19 +97,19 @@ main .container{
     border-radius: 5px;
 }
 
-.items:hover{
+.item:hover{
     background: hsl(210, 36%, 96%);
     transition: .5s;
     color: hsl(210, 22%, 49%);
 }
 
-.items .title{
+.item .title{
     font-family: Arial, Helvetica, sans-serif;
     margin-left: 12px;
     letter-spacing: .1rem;
 }
 
-.items .btn-container{
+.item .btn-container{
     width: 50px;
     margin-right: 10px;
     display: flex;
@@ -118,25 +118,25 @@ main .container{
 }
 
 
-.items .btn-container button{
+.item .btn-container button{
     background: none;
     border: none;
     cursor: pointer;
 }
 
-.items .btn-container button:first-child{
+.item .btn-container button:first-child{
     color: hsl(125, 71%, 66%);
 }
 
-.items .btn-container button:first-child:hover{
+.item .btn-container button:first-child:hover{
     color: hsl(125, 67%, 44%);
 }
 
-.items .btn-container button:last-child{
+.item .btn-container button:last-child{
     color: hsl(360, 71%, 66%);
 }
 
-.items .btn-container button:last-child:hover{
+.item .btn-container button:last-child:hover{
     color: hsl(360, 67%, 44%);
 }
 

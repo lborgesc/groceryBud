@@ -1,76 +1,81 @@
-const input = document.querySelector('input');
+const INPUT = document.querySelector('input');
 let database = [
     {item: 'eggs'},
     {item: 'e.g'}
 ]
 
-const createItem = ( text, index ) => {
-    const item = document.createElement('div');
-    item.classList.add('items');
+function createItem( text, index ){
+    const item = document.createElement('li');
+    item.classList.add('item');
     item.innerHTML = `    
-        <p class="title" data-index=${index}>${text}</p>
+        <p class="title" data-index="${index}">${text}</p>
         <div class="btn-container">
-            <button type="button" class="edit-btn" data-index=${index}>
+            <button type="button" class="edit-btn" onclick="editItem(this)" data-index="${index}">
                 <i class="fa-solid fa-pen-to-square"></i>
             </button>
-            <button type="button" class="delete-btn" data-index=${index}>
+            <button type="button" class="delete-btn" onclick="removeItem(this)" data-index="${index}">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </div>                  
-    `
+    `;
     document.querySelector('.container-items').appendChild(item);
 }
 
-const randerScreen = ( ) => {
-    clearItem();
-    database.forEach(( data, index ) => createItem(data.item, index))
-}
-
-const clearItem = ( ) =>{
-    const grocery = document.querySelector('.container-items')
+function clearItem ( ) {
+    const grocery = document.querySelector('.container-items');
     while (grocery.firstChild){
         grocery.removeChild(grocery.lastChild);
     }
 }
 
-const insertItem = ( event ) => {
-     if (event.target.innerText === 'Submit' || event.key === 'Enter' ) {
-        if (input.value) {
-            database.push({item: input.value});
-            randerScreen();
-            input.value = ''
-        }
-     }
+function randerScreen ( ) {
+    clearItem();
+    database.forEach(( data, index ) => createItem(data.item, index));
 }
 
-const removeItem = ( index ) => {
+function submitEdit ( btn ) {
+    resetSubmit();
+   if (btn.innerHTML === "Submit") { 
+       if (!document.querySelector('input').value) {
+            alert('Preencha o campo!');
+       }else{
+            database.push({item: document.querySelector('input').value});
+            randerScreen( );
+            document.querySelector('input').value = "";
+       }
+   }
+
+
+}
+
+function editItem ( edit ) {
+    const index = edit.dataset.index;
+    document.querySelector('input').value = database[index].item;
+
+    const btnEdit = document.querySelector('.btnSubmit');
+    btnEdit.innerHTML = "Edit";
+
+    btnEdit.onclick = ( event ) => {
+
+        if (event.target.innerHTML === "Edit") { 
+            database[index].item = document.querySelector('input').value;
+            randerScreen( );
+            resetSubmit();
+            document.querySelector('input').value = "";
+
+        }
+    }
+}
+
+function resetSubmit() {
+    const btnEdit = document.querySelector('.btnSubmit');
+    btnEdit.innerHTML = "Submit";
+}
+
+function removeItem ( delet ) {
+    const index = delet.dataset.index;
     database.splice(index, 1)
     randerScreen();
 }
 
-const changeItem = ( index ) => {
-
-    document.querySelector('.btnSubmit').innerText = "Edit";
-    input.value = database[index].item;
-
-    document.querySelector('.btnSubmit').addEventListener('click', ( event ) => {
-        debugger;
-        console.log(index);
-    })  
-}
-
-const clickItem = ( event ) => {
-    const index = event.target.parentNode.dataset.index;
-
-    if (event.target.parentNode.getAttribute('class') === "delete-btn") {
-        removeItem(index);
-    }else if (event.target.parentNode.getAttribute('class') === "edit-btn") {
-        changeItem(index);
-    }
-}
-
-document.querySelector('.btnSubmit').addEventListener('click', insertItem)
-document.querySelector('.container').addEventListener('keypress', insertItem)
-document.querySelector('.container-items').addEventListener('click', clickItem)
-
-randerScreen();
+randerScreen( );
