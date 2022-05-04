@@ -1,4 +1,5 @@
 const INPUT = document.querySelector('input');
+let indexEditItem = 0;
 let database = [
     {item: 'eggs'},
     {item: 'e.g'}
@@ -34,7 +35,7 @@ function randerScreen ( ) {
 }
 
 function submitEdit ( btn ) {
-    resetSubmit();
+    console.log(btn.innerHTML);
    if (btn.innerHTML === "Submit") { 
        if (!document.querySelector('input').value) {
             alert('Preencha o campo!');
@@ -45,26 +46,24 @@ function submitEdit ( btn ) {
        }
    }
 
-
+   
+   if (btn.innerHTML === "Edit") { 
+       const btnEdit = document.querySelector('.btnSubmit');
+        btnEdit.onclick = (  ) => {
+            database[indexEditItem].item = document.querySelector('input').value;
+            randerScreen( );
+            document.querySelector('input').value = "";
+            btn.innerHTML = "Submit";
+        }
+    }
 }
 
 function editItem ( edit ) {
-    const index = edit.dataset.index;
-    document.querySelector('input').value = database[index].item;
+    indexEditItem = edit.dataset.index;
+    document.querySelector('input').value = database[indexEditItem].item;
 
     const btnEdit = document.querySelector('.btnSubmit');
     btnEdit.innerHTML = "Edit";
-
-    btnEdit.onclick = ( event ) => {
-
-        if (event.target.innerHTML === "Edit") { 
-            database[index].item = document.querySelector('input').value;
-            randerScreen( );
-            resetSubmit();
-            document.querySelector('input').value = "";
-
-        }
-    }
 }
 
 function resetSubmit() {
