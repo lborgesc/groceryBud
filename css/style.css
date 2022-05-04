@@ -35,6 +35,28 @@ main .container{
     transition: .5s;
 }
 
+.container .displayAlert{
+    width: 90%;
+    border-radius: 5px;
+    padding: 3px;
+    margin-bottom: 20px;
+    letter-spacing: .2rem;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .8rem;
+}
+
+.displayAlert.success{
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.displayAlert.danger{
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+
 .container h1{
     color: hsl(209, 61%, 16%);
     font-family: Arial, Helvetica, sans-serif;
@@ -149,4 +171,8 @@ main .container{
     font-size: .9rem;
     cursor: pointer;
     color: hsl(360, 71%, 66%);
+}
+
+.clear.active{
+    display: none;
 }

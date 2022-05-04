@@ -1,5 +1,9 @@
 const INPUT = document.querySelector('input');
 let indexEditItem = 0;
+
+const getDatabase = () => JSON.parse(localStorage.getItem('groceryBud')) || [];
+const setDatabase = ( database ) => localStorage.setItem('groceryBud', JSON.stringify(database));
+
 let database = [
     {item: 'eggs'},
     {item: 'e.g'}
@@ -31,50 +35,87 @@ function clearItem ( ) {
 
 function randerScreen ( ) {
     clearItem();
-    database.forEach(( data, index ) => createItem(data.item, index));
+    const database = getDatabase();
+    database.forEach((data, index) => createItem(data.item, index));
+
+    if (!database.length) {
+        document.querySelector('.clear').classList.add('active');
+    }else {
+        document.querySelector('.clear').classList.remove('active');
+    } 
 }
 
 function submitEdit ( btn ) {
-    console.log(btn.innerHTML);
    if (btn.innerHTML === "Submit") { 
-       if (!document.querySelector('input').value) {
-            alert('Preencha o campo!');
+       if (!INPUT.value) {
+            displayAlert("please enter value", "danger");
        }else{
-            database.push({item: document.querySelector('input').value});
+            const database = getDatabase();
+            database.push({item: INPUT.value});
+            setDatabase(database);
+            displayAlert("item added to the list", "success");
             randerScreen( );
-            document.querySelector('input').value = "";
+            INPUT.value = "";
        }
    }
 
    
    if (btn.innerHTML === "Edit") { 
-       const btnEdit = document.querySelector('.btnSubmit');
-        btnEdit.onclick = (  ) => {
-            database[indexEditItem].item = document.querySelector('input').value;
+            const database = getDatabase();
+            database[indexEditItem].item = INPUT.value;
+            setDatabase(database);
+            displayAlert("value changed", "success");
             randerScreen( );
-            document.querySelector('input').value = "";
+
+            INPUT.value = "";
             btn.innerHTML = "Submit";
-        }
     }
 }
 
 function editItem ( edit ) {
+    const database = getDatabase();
     indexEditItem = edit.dataset.index;
-    document.querySelector('input').value = database[indexEditItem].item;
+    INPUT.value = database[indexEditItem].item;
 
     const btnEdit = document.querySelector('.btnSubmit');
     btnEdit.innerHTML = "Edit";
 }
 
-function resetSubmit() {
-    const btnEdit = document.querySelector('.btnSubmit');
-    btnEdit.innerHTML = "Submit";
-}
 
 function removeItem ( delet ) {
     const index = delet.dataset.index;
-    database.splice(index, 1)
+    const database = getDatabase();
+    database.splice(index, 1);
+    setDatabase(database);
+    displayAlert("item removed", "danger");
     randerScreen();
+}
+
+function clearItems () {
+    const database = getDatabase();
+    while(database.length) {
+        database.pop();
+     }
+
+     INPUT.value = "";
+     setDatabase(database);
+     displayAlert("empty list", "danger");
+     randerScreen( );
+}
+
+function displayAlert ( text, status ) {
+    const p = document.createElement('p');  
+    p.innerText = text;    
+    document.querySelector('.displayAlert').classList.add(status);
+    document.querySelector('.displayAlert').append(p);
+
+    setTimeout( () => {
+        document.querySelector('.displayAlert').classList.remove(status);
+        p.innerText = "";
+    }, 1000)
+    
+
+      
 }
 
 randerScreen( );
